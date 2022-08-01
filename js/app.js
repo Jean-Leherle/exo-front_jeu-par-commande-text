@@ -28,9 +28,9 @@ var app = {
       }
     }
 
-    document.querySelector('.c1.r1').classList.add('cellStart')
-    document.querySelector(`.r${app.param.nbRow}.c${app.param.nbColumn}`).classList.add('cellEnd')
-
+    board.querySelector('.c1.r1').classList.add('cellStart')
+    board.querySelector(`.r${app.param.nbRow}.c${app.param.nbColumn}`).classList.add('cellEnd')
+    board.querySelector('.cellStart').classList.add('cellCurrent')
   },
 
   handleLaunchScriptButton: function () {
