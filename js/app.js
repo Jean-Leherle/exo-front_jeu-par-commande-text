@@ -31,7 +31,7 @@ var app = {
 
     board.querySelector('.c1.r1').classList.add('cellStart')
     board.querySelector(`.r${app.param.nbRow}.c${app.param.nbColumn}`).classList.add('cellEnd')
-    board.querySelector('.cellStart').classList.add('cellCurrent')
+    board.querySelector('.cellStart').classList.add('cellCurrent', 'cellCurrent-right')
   },
 
   moveForward: function () {
@@ -97,11 +97,43 @@ var app = {
 
   turnRight: function () {
     const actualPosition = document.querySelector('.cellCurrent')
-    app.param.directionList.forEach((direction, key) => {
+    let nextDirection
+    app.param.directionList.forEach((directionTested, key) => {
+
       if (actualPosition.classList.contains(directionTested)) {
-        direction = directionTested
+
+        actualPosition.classList.remove(directionTested);
+
+        key++
+        if ((key) > (app.param.directionList.length - 1)) {
+          actualPosition.classList.add(app.param.directionList[0])
+        }
+        else
+          nextDirection = app.param.directionList[key]
       }
     })
+    actualPosition.classList.add(nextDirection)
+  },
+  turnLeft: function () {
+    const actualPosition = document.querySelector('.cellCurrent')
+    let nextDirection
+    app.param.directionList.forEach((directionTested, key) => {
+
+      if (actualPosition.classList.contains(directionTested)) {
+
+        actualPosition.classList.remove(directionTested);
+
+        
+        if ((key-1) < 0 ) {
+        
+          nextDirection = app.param.directionList[app.param.directionList.length-1]
+        }
+        else
+          nextDirection = app.param.directionList[key-1]
+          console.log('key', key,' prochaine direction', (nextDirection));
+      }
+    })
+    actualPosition.classList.add(nextDirection)
   },
 
   handleLaunchScriptButton: function () {
