@@ -7,6 +7,7 @@ var app = {
     if (error.error) (
       alert(error.message)
     )
+    document.getElementById('launchScript').addEventListener('click', app.handleLaunchScriptButton)
 
     // Event listeners - TODO
   },
@@ -15,6 +16,8 @@ var app = {
     nbRow: 4,
     nbColumn: 6,
   },
+
+
 
   drawBoard: function () {
     const board = document.getElementById('board')
@@ -32,10 +35,16 @@ var app = {
         row[r].appendChild(column[c])
       }
     }
-
-    board.querySelector('.c1.r1').classList.add('cellStart')
-    board.querySelector(`.r${app.param.nbRow}.c${app.param.nbColumn}`).classList.add('cellEnd')
-    board.querySelector('.cellStart').classList.add('cellCurrent', 'cellCurrent-right')
+    let startElem
+    let endElem
+    do{
+    startElem = board.querySelector(`.c${parseInt(Math.random()*(app.param.nbColumn-1)+1)}.r${parseInt(Math.random()*(app.param.nbRow-1)+1 )}`)
+    endElem = board.querySelector(`.r${parseInt(Math.random()*(app.param.nbRow-1)+1)}.c${parseInt(Math.random()*(app.param.nbColumn-1)+1)}`)
+    }while(startElem===endElem)
+    console.log(startElem, endElem);
+    startElem.classList.add('cellStart')
+    endElem.classList.add('cellEnd')
+    board.querySelector('.c1.r1').classList.add('cellCurrent', 'cellCurrent-right')
   },
 
   moveForward: function () {
@@ -148,6 +157,7 @@ var app = {
       message: []
     }
     try {
+      
       for (key in app.param.directionList) {
         const startingCell = document.querySelector('.cellCurrent')
         app.moveForward();
@@ -179,8 +189,6 @@ var app = {
           usualError.message.push(`turnLeft to ${app.param.directionList[key].slice(12)} failed`)
         }
         app.turnRight()
-
-
       }
     }
     catch (error) {
@@ -188,18 +196,18 @@ var app = {
       usualError.message.push(error)
       return usualError
     }
+    document.querySelector('.cellCurrent').classList.remove('cellCurrent', 'cellCurrent-right')
+    document.querySelector('.cellStart').classList.add('cellCurrent', 'celleCurrent-right')
     return usualError
-
-
-
-
-
   },
 
   handleLaunchScriptButton: function () {
-    // TODO
-
+    // TODO trouver quel mot clef permet d'avoir le contenu du text area
+    const text = document.getElementById('userCode').value
+    console.log(text);
     // TODO : get all lines as an array
+    const codeLines = text.split('\n')
+    console.log(codeLines);
 
     window.setTimeout(function () {
       app.codeLineLoop(codeLines, 0);
@@ -208,7 +216,21 @@ var app = {
   codeLineLoop: function (codeLines, index) {
     // Getting currentLine
     var currentLine = codeLines[index];
-    console.log(currentLine);
+    switch (currentLine) {
+      case 'Avance':
+        app.moveForward();
+        break
+      case 'Droite':
+        app.turnRight();
+        break
+      case 'Gauche':
+        app.turnLeft();
+        break
+      default:
+        
+        console.log(currentLine, ' : commande non reconnue.');
+        return
+      }
 
 
     // Increment
@@ -228,6 +250,11 @@ var app = {
   },
   checkSuccess: function () {
     // TODO display if the game is won or not
+    if (document.querySelector('.cellEnd').classList.contains('cellCurrent')) { 
+      alert('Bravo !')
+    }
+    else
+    alert('raté, reessaye')
   }
 };
 
