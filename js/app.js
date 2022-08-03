@@ -3,6 +3,10 @@ var app = {
 
     // TODO
     app.drawBoard();
+    const error = app.testAll()
+    if (error.error) (
+      alert(error.message)
+    )
 
     // Event listeners - TODO
   },
@@ -123,17 +127,73 @@ var app = {
 
         actualPosition.classList.remove(directionTested);
 
-        
-        if ((key-1) < 0 ) {
-        
-          nextDirection = app.param.directionList[app.param.directionList.length-1]
+
+        if ((key - 1) < 0) {
+
+          nextDirection = app.param.directionList[app.param.directionList.length - 1]
         }
         else
-          nextDirection = app.param.directionList[key-1]
-          console.log('key', key,' prochaine direction', (nextDirection));
+          nextDirection = app.param.directionList[key - 1]
+        //console.log('key', key, ' prochaine direction', (nextDirection));
       }
     })
     actualPosition.classList.add(nextDirection)
+  },
+
+  testAll: function () {
+    goodCollumnCell = ['c2', 'c2', 'c1', 'c1']
+    googRowCell = ['r1', 'r2', 'r2', 'r1']
+    const usualError = {
+      error: false,
+      message: []
+    }
+    try {
+      for (key in app.param.directionList) {
+        const startingCell = document.querySelector('.cellCurrent')
+        app.moveForward();
+        const actualCell = document.querySelector('.cellCurrent')
+        if (!(actualCell.classList.contains(goodCollumnCell[key]) && actualCell.classList.contains(googRowCell[key]))
+          || startingCell.classList.contains('cellCurrent')) {
+
+          usualError.error = true
+          usualError.message.push(`moveForward ${app.param.directionList[key].slice(12)} failed`)
+        }
+        app.turnRight()
+        const turnedCellRight = document.querySelector('.cellCurrent')
+        if (turnedCellRight.classList.contains(app.param.directionList[key])
+          || !turnedCellRight.classList.contains(app.param.directionList[(parseInt(key) + 1) % app.param.directionList.length])) {
+          console.log(turnedCellRight.classList.contains(app.param.directionList[key]))
+          console.log(!turnedCellRight.classList.contains(app.param.directionList[(parseInt(key) + 1) % app.param.directionList.length]));
+          usualError.error = true
+          usualError.message.push(`turnRight to ${app.param.directionList[key].slice(12)} failed`)
+        }
+        app.turnLeft()
+        const turnedCellLeft = document.querySelector('.cellCurrent')
+            //contient la bonne nouvelle classe ()$
+        
+        if (turnedCellLeft.classList.contains(app.param.directionList[(parseInt(key) +1 ) % app.param.directionList.length])
+          || !turnedCellLeft.classList.contains(app.param.directionList[(parseInt(key) ) % app.param.directionList.length])) {
+          console.log(turnedCellLeft.classList, ' // ',app.param.directionList[key])
+          console.log(turnedCellLeft.classList, ' // ', app.param.directionList[(parseInt(key) ) % app.param.directionList.length])
+          usualError.error = true
+          usualError.message.push(`turnLeft to ${app.param.directionList[key].slice(12)} failed`)
+        }
+        app.turnRight()
+
+
+      }
+    }
+    catch (error) {
+      console.log(error);
+      usualError.message.push(error)
+      return usualError
+    }
+    return usualError
+
+
+
+
+
   },
 
   handleLaunchScriptButton: function () {
