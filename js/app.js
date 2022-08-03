@@ -162,19 +162,19 @@ var app = {
         const turnedCellRight = document.querySelector('.cellCurrent')
         if (turnedCellRight.classList.contains(app.param.directionList[key])
           || !turnedCellRight.classList.contains(app.param.directionList[(parseInt(key) + 1) % app.param.directionList.length])) {
-          console.log(turnedCellRight.classList.contains(app.param.directionList[key]))
-          console.log(!turnedCellRight.classList.contains(app.param.directionList[(parseInt(key) + 1) % app.param.directionList.length]));
+          //console.log(turnedCellRight.classList.contains(app.param.directionList[key]))
+          //console.log(!turnedCellRight.classList.contains(app.param.directionList[(parseInt(key) + 1) % app.param.directionList.length]));
           usualError.error = true
           usualError.message.push(`turnRight to ${app.param.directionList[key].slice(12)} failed`)
         }
         app.turnLeft()
         const turnedCellLeft = document.querySelector('.cellCurrent')
-            //contient la bonne nouvelle classe ()$
-        
-        if (turnedCellLeft.classList.contains(app.param.directionList[(parseInt(key) +1 ) % app.param.directionList.length])
-          || !turnedCellLeft.classList.contains(app.param.directionList[(parseInt(key) ) % app.param.directionList.length])) {
-          console.log(turnedCellLeft.classList, ' // ',app.param.directionList[key])
-          console.log(turnedCellLeft.classList, ' // ', app.param.directionList[(parseInt(key) ) % app.param.directionList.length])
+        //contient la bonne nouvelle classe ()$
+
+        if (turnedCellLeft.classList.contains(app.param.directionList[(parseInt(key) + 1) % app.param.directionList.length])
+          || !turnedCellLeft.classList.contains(app.param.directionList[(parseInt(key)) % app.param.directionList.length])) {
+          //console.log(turnedCellLeft.classList, ' // ',app.param.directionList[key])
+          //console.log(turnedCellLeft.classList, ' // ', app.param.directionList[(parseInt(key) ) % app.param.directionList.length])
           usualError.error = true
           usualError.message.push(`turnLeft to ${app.param.directionList[key].slice(12)} failed`)
         }
